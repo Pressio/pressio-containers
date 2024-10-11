@@ -49,7 +49,7 @@ jobs:
       - name: Build and Push Docker images for Github Container Registry
         uses: docker/build-push-action@v4
         with:
-          tags: ghcr.io/pressio/${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
+          tags: ghcr.io/pressio-containers/${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
           file: docker_scripts/${{ matrix.config.dockerfile }}.dockerfile
           build-args: |
             COMPILER_VERSION=${{ matrix.config.compiler-version }}
