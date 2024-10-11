@@ -40,7 +40,7 @@ jobs:
 
       - name: Login to Github Container Registry
         uses: docker/login-action@v3
-        if: github.repository == 'Pressio/pressio-containers' && github.ref == 'refs/heads/develop'
+        if: github.repository == 'Pressio/pressio-containers' && github.ref == 'refs/heads/main'
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
@@ -55,4 +55,4 @@ jobs:
             COMPILER_VERSION=${{ matrix.config.compiler-version }}
             DOCKER_TAG=${{ matrix.config.tag }}
           pull: true
-          push: ${{ github.repository == 'Pressio/pressio-containers' && github.ref == 'refs/heads/develop' }}
+          push: ${{ github.repository == 'Pressio/pressio-containers' && github.ref == 'refs/heads/main' }}
