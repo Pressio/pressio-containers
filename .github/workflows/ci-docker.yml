@@ -27,6 +27,7 @@ jobs:
           - {dockerfile: 'ubuntu-gnu',          compiler-version: '11', tag: 'latest'}
 
     runs-on: ubuntu-latest
+
     permissions:
       contents: read
       packages: write
@@ -40,16 +41,22 @@ jobs:
 
       - name: Login to Github Container Registry
         uses: docker/login-action@v3
-
         with:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          images: ghcr.io/Pressio/pressio-containers//${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
+
       - name: Build and Push Docker images for Github Container Registry
         uses: docker/build-push-action@v4
         with:
-          tags: ghcr.io/pressio-containers/${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
           file: docker_scripts/${{ matrix.config.dockerfile }}.dockerfile
           build-args: |
             COMPILER_VERSION=${{ matrix.config.compiler-version }}
