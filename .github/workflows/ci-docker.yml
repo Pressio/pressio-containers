@@ -50,7 +50,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/Pressio/pressio-containers//${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
+          images: ghcr.io/pressio-containers/${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
 
       - name: Build and Push Docker images for Github Container Registry
         uses: docker/build-push-action@v4
