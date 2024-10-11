@@ -54,5 +54,4 @@ jobs:
           build-args: |
             COMPILER_VERSION=${{ matrix.config.compiler-version }}
             DOCKER_TAG=${{ matrix.config.tag }}
-          pull: true
           push: true
