@@ -46,17 +46,10 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@v5
-        with:
-          images: ghcr.io/pressio-containers/${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
-
       - name: Build and Push Docker images for Github Container Registry
         uses: docker/build-push-action@v4
         with:
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
+          tags: ghcr.io/pressio-containers/${{ matrix.config.dockerfile }}-${{ matrix.config.compiler-version }}:${{ matrix.config.tag }}
           file: docker_scripts/${{ matrix.config.dockerfile }}.dockerfile
           build-args: |
             COMPILER_VERSION=${{ matrix.config.compiler-version }}
