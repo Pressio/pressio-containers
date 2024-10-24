@@ -3,6 +3,8 @@
 This repository holds all of the Dockerfiles that create the containers used throughout the Pressio ecosystem for testing.
 These containers allow us to, e.g., not rebuild Trilinos every time we test Pressio in CI.
 
+When a Dockerfile is modified or added to this repository, the `ci-docker.yml` GitHub workflow will automatically build and push the image to the [Pressio container registry](https://github.com/orgs/Pressio/packages).
+
 ## Adding a New Container
 
 Generally, to add a new container you will need to create a new Dockerfile (see the `docker_scripts` directory for existing Dockerfiles).
