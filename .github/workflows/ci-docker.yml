@@ -21,9 +21,8 @@ jobs:
           - {dockerfile: 'fedora-gnu',                     compiler-version: '13', tag: 'latest'}
           # - {dockerfile: 'intel-oneapi',                  compiler-version: 'latest'}
           - {dockerfile: 'ubuntu-clang',                   compiler-version: '14', tag: 'latest'}
-          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: 'ef73d14'}
-          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: '702aac5'}
-          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: 'trilinos-release-14-4-0'}
+          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: '0dc4553'}
+          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: '5bbda25'}
           - {dockerfile: 'ubuntu-gnu',                     compiler-version: '11', tag: 'latest'}
           - {dockerfile: 'ubuntu-gnu-kokkos-cpu-openmp',   compiler-version: '11', tag: 'latest'}
           - {dockerfile: 'ubuntu-gnu-kokkos-cpu-serial',   compiler-version: '11', tag: 'latest'}
