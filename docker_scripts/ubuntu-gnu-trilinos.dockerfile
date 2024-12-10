@@ -81,7 +81,7 @@ RUN cmake -B Trilinos/builddir \
         -D Trilinos_ENABLE_Teuchos:BOOL=ON \
         -D Trilinos_ENABLE_Epetra:BOOL=ON \
         -D Trilinos_ENABLE_Tpetra:BOOL=ON \
-        -D Tpetra_ENABLE_DEPRECATED_CODE:BOOL=OFF \
+        -D Tpetra_ENABLE_DEPRECATED_CODE:BOOL=ON \
         -D Tpetra_ENABLE_TSQR:BOOL=ON \
         -D Trilinos_ENABLE_EpetraExt:BOOL=ON \
         -D Trilinos_ENABLE_AztecOO:BOOL=ON \
