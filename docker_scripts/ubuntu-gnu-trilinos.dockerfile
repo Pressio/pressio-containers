@@ -48,7 +48,7 @@ ENV CXX=/usr/bin/mpic++
 ENV FC=/usr/bin/mpifort
 ENV F77=/usr/bin/mpifort
 ENV F90=/usr/bin/mpifort
-ENV MPIRUNe=/usr/bin/mpirun
+ENV MPIRUN=/usr/bin/mpirun
 
 # Building Trilinos
 WORKDIR /home
@@ -79,13 +79,9 @@ RUN cmake -B Trilinos/builddir \
         -D Trilinos_ENABLE_ALL_PACKAGES:BOOL=OFF \
         -D Trilinos_ENABLE_ALL_OPTIONAL_PACKAGES:BOOL=OFF \
         -D Trilinos_ENABLE_Teuchos:BOOL=ON \
-        -D Trilinos_ENABLE_Epetra:BOOL=ON \
         -D Trilinos_ENABLE_Tpetra:BOOL=ON \
-        -D Tpetra_ENABLE_DEPRECATED_CODE:BOOL=ON \
+        -D Tpetra_ENABLE_DEPRECATED_CODE:BOOL=OFF \
         -D Tpetra_ENABLE_TSQR:BOOL=ON \
-        -D Trilinos_ENABLE_EpetraExt:BOOL=ON \
-        -D Trilinos_ENABLE_AztecOO:BOOL=ON \
-        -D Trilinos_ENABLE_Ifpack:BOOL=ON \
         -D Trilinos_ENABLE_Ifpack2:BOOL=ON \
         -D Trilinos_ENABLE_ROL:BOOL=ON \
         -D CMAKE_INSTALL_PREFIX:PATH=/home/pressio_builds/trilinos/install \
