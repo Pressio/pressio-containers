@@ -14,5 +14,9 @@ RUN dnf update -y && \
         wget && \
     dnf clean all
 
-ENV CC=/usr/bin/gcc
-ENV CXX=/usr/bin/g++
+ENV CC=/usr/bin/mpicc
+ENV CXX=/usr/bin/mpic++
+ENV FC=/usr/bin/mpifort
+ENV F77=/usr/bin/mpifort
+ENV F90=/usr/bin/mpifort
+ENV MPIRUN=/usr/bin/mpirun
