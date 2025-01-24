@@ -10,6 +10,7 @@ RUN dnf update -y && \
         gtest-devel \
         hostname \
         make \
+        openmpi \
         openmpi-devel \
         wget && \
     dnf clean all

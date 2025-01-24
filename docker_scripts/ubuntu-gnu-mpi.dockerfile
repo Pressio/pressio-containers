@@ -16,6 +16,7 @@ RUN apt-get update -y -q && \
         libgtest-dev \
         libopenmpi-dev \
         make \
+        openmpi-bin \
         software-properties-common \
         wget && \
     apt-get clean && \
