@@ -14,7 +14,6 @@ RUN apt-get update -y -q && \
         git \
         libgtest-dev \
         make \
-        openmpi-bin \
         wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*

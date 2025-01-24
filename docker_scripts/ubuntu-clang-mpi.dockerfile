@@ -15,13 +15,10 @@ RUN apt-get update -y -q && \
         libgtest-dev \
         libopenmpi-dev \
         make \
+        openmpi-bin \
         wget && \
     apt-get clean && \
     rm -rf /var/lib/apt/lists/*
 
-ENV CC=/usr/bin/mpicc
-ENV CXX=/usr/bin/mpic++
-ENV FC=/usr/bin/mpifort
-ENV F77=/usr/bin/mpifort
-ENV F90=/usr/bin/mpifort
-ENV MPIRUN=/usr/bin/mpirun
+ENV CC=/usr/bin/clang-${COMPILER_VERSION}
+ENV CXX=/usr/bin/clang++-${COMPILER_VERSION}
