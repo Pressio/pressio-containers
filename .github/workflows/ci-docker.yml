@@ -26,7 +26,6 @@ jobs:
           - ubuntu-07
           - ubuntu-08
           - ubuntu-09
-          - ubuntu-trilinos-base
 
     runs-on: ubuntu-latest
 
@@ -50,6 +49,12 @@ jobs:
 
       # TODO: Add a "test" that runs pressio with the built containers
       # before pushing
+      - name: Push Base Trilinos Image
+        uses: docker/build-push-action@v6
+        with:
+          tags: ghcr.io/pressio/ubuntu-trilinos-base
+          file: docker_scripts/ubutnu-trilinos-base.dockerfile
+          push: true
 
       - name: Build and Push Docker images for Github Container Registry
         uses: docker/build-push-action@v6
