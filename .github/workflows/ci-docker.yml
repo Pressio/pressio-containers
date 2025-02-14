@@ -24,9 +24,7 @@ jobs:
           - ubuntu-05
           - ubuntu-06
           - ubuntu-07
-          - ubuntu-trilinos-base
-          # - ubuntu-08
-          # - ubuntu-09
+          - ubuntu-08
 
     runs-on: ubuntu-latest
 

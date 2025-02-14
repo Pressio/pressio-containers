@@ -1,2 +1,2 @@
-ARG TRILINOS_VERSION=0dc4553
+ARG TRILINOS_VERSION=5bbda25
 FROM ghcr.io/pressio/ubuntu-trilinos-base
