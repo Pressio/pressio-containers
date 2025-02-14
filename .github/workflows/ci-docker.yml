@@ -26,6 +26,7 @@ jobs:
           - ubuntu-07
           - ubuntu-08
           - ubuntu-09
+          - ubuntu-trilinos-base
 
     runs-on: ubuntu-latest
 
@@ -56,4 +57,5 @@ jobs:
           # Only push image if running on main or develop
           tags: ghcr.io/pressio/${{ matrix.dockerfile }}
           file: docker_scripts/${{ matrix.dockerfile }}.dockerfile
-          push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
+          push: true
+          # push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
