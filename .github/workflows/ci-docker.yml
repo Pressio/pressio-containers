@@ -53,7 +53,7 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           tags: ghcr.io/pressio/ubuntu-trilinos-base
-          file: docker_scripts/ubutnu-trilinos-base.dockerfile
+          file: docker_scripts/ubuntu-trilinos-base.dockerfile
           push: true
 
       - name: Build and Push Docker images for Github Container Registry
