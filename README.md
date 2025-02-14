@@ -5,6 +5,26 @@ These containers allow us to, e.g., not rebuild Trilinos every time we test Pres
 
 When a Dockerfile is modified or added to this repository, the `ci-docker.yml` GitHub workflow will automatically build and push the image to the [Pressio container registry](https://github.com/orgs/Pressio/packages).
 
+Contents:
+- [List of Containers](#list-of-containers)
+- [Adding a New Container](#adding-a-new-container)
+  - [Adding a New Version of Trilinos](#adding-a-new-version-of-trilinos)
+
+## List of Containers
+
+The following table shows the current container configurations maintained by the `pressio-containers` repository.
+
+| OS       | Compiler  | TPL (Optional)                                           |
+| :------- | :-------- | :-------------------------------------------------       |
+| `ubuntu` | `gnu11`   | `mpi` `trilinos` `kokkos-cpu-openmp` `kokkos-cpu-serial` |
+|          | `clang14` | `mpi`                                                    |
+| `fedora` | `gnu13`   | `mpi`                                                    |
+|          | `clang17` | `mpi`                                                    |
+
+The images are named like: `os-compiler[-tpl]`.
+
+For example: `ubuntu-clang14`, `fedora-gnu13-mpi`, `ubuntu-gnu11-kokkos-cpu-openmp`.
+
 ## Adding a New Container
 
 Generally, to add a new container you will need to create a new Dockerfile (see the `docker_scripts` directory for existing Dockerfiles).
@@ -25,7 +45,7 @@ jobs:
           - {dockerfile: 'macos-clang', compiler-version: '14', tag: 'latest'}
 ```
 
-## Adding a New Version of Trilinos
+### Adding a New Version of Trilinos
 
 To add a new version of Trilinos,  you **do not** need to create a new Dockerfile.
 Instead, use the existing `ubuntu-gnu-trilinos.dockerfile` file in the configuration matrix of `ci-docker.yml` and add the desired tag or commit hash to the `tag` field.
