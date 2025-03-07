@@ -6,3 +6,10 @@ ARG TRILINOS_VERSION=5bbda25
 COPY ../scripts/install_trilinos.sh /install_trilinos.sh
 RUN chmod +x /install_trilinos.sh && \
     /install_trilinos.sh ${TRILINOS_VERSION}
+
+ENV CC=/usr/bin/mpicc
+ENV CXX=/usr/bin/mpic++
+ENV FC=/usr/bin/mpifort
+ENV F77=/usr/bin/mpifort
+ENV F90=/usr/bin/mpifort
+ENV MPIRUN=/usr/bin/mpirun

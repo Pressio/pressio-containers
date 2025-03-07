@@ -49,14 +49,6 @@ update-alternatives --set c++ /usr/bin/g++
 update-alternatives --install /usr/bin/fortrann fortrann /usr/bin/gfortran 20
 update-alternatives --set fortrann /usr/bin/gfortran
 
-# Set environment variables
-export CC=/usr/bin/mpicc
-export CXX=/usr/bin/mpic++
-export FC=/usr/bin/mpifort
-export F77=/usr/bin/mpifort
-export F90=/usr/bin/mpifort
-export MPIRUN=/usr/bin/mpirun
-
 # Clone and build Trilinos
 mkdir /trilinos && cd /trilinos
 
