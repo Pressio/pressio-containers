@@ -11,17 +11,19 @@ Contents:
 
 ## List of Containers
 
-The following table shows the current container configurations maintained by the `pressio-containers` repository.
+The following table shows the current Docker containers maintained by the `pressio-containers` repository.
 Click on a container to see its corresponding dockerfile with all dependencies.
 
-- [`ubuntu-01`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-01.dockerfile)
-- [`ubuntu-03`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-03.dockerfile)
-- [`ubuntu-02`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-02.dockerfile)
-- [`ubuntu-04`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-04.dockerfile)
-- [`ubuntu-05`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-05.dockerfile)
-- [`ubuntu-06`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-06.dockerfile)
-- [`ubuntu-07`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-07.dockerfile)
-- [`ubuntu-08`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-08.dockerfile)
+| Container Name |
+| :------------- |
+| [`ubuntu-01`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-01.dockerfile) |
+| [`ubuntu-02`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-02.dockerfile) |
+| [`ubuntu-03`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-03.dockerfile) |
+| [`ubuntu-04`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-04.dockerfile) |
+| [`ubuntu-05`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-05.dockerfile) |
+| [`ubuntu-06`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-06.dockerfile) |
+| [`ubuntu-07`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-07.dockerfile) |
+| [`ubuntu-08`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-08.dockerfile) |
 
 ## Adding a New Container
 
