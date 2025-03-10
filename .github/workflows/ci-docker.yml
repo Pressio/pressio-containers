@@ -12,24 +12,36 @@ on:
   schedule:
     - cron:  '0 5 * * FRI'
 
+concurrency:
+  group: ${{ github.event.repository.name }}-${{ github.ref }}-${{ github.workflow }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+env:
+  MPI_FLAGS: "-D PRESSIO_ENABLE_TPL_MPI=ON -D CMAKE_C_COMPILER=/usr/bin/mpicc -D CMAKE_CXX_COMPILER=/usr/bin/mpic++"
+  TRILINOS_FLAGS: "-D PRESSIO_ENABLE_TPL_TRILINOS=ON -D Trilinos_DIR=/trilinos/install/lib/cmake/Trilinos -D MPI_Fortran_COMPILER=/usr/bin/mpif90"
+  KOKKOS_FLAGS: "-D PRESSIO_ENABLE_TPL_KOKKOS=ON -D Kokkos_ROOT=/kokkos/install -D KokkosKernels_ROOT=/kokkos-kernels/install"
+
 jobs:
   CI:
     strategy:
       matrix:
-        config:
-          - {dockerfile: 'fedora-clang',                   compiler-version: '17', tag: 'latest'}
-          - {dockerfile: 'fedora-clang-mpi',               compiler-version: '17', tag: 'latest'}
-          - {dockerfile: 'fedora-gnu',                     compiler-version: '13', tag: 'latest'}
-          - {dockerfile: 'fedora-gnu-mpi',                 compiler-version: '13', tag: 'latest'}
-          # - {dockerfile: 'intel-oneapi',                  compiler-version: 'latest'}
-          - {dockerfile: 'ubuntu-clang',                   compiler-version: '14', tag: 'latest'}
-          - {dockerfile: 'ubuntu-clang-mpi',               compiler-version: '14', tag: 'latest'}
-          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: '0dc4553'}
-          - {dockerfile: 'ubuntu-gnu-trilinos',            compiler-version: '11', tag: '5bbda25'}
-          - {dockerfile: 'ubuntu-gnu',                     compiler-version: '11', tag: 'latest'}
-          - {dockerfile: 'ubuntu-gnu-mpi',                 compiler-version: '11', tag: 'latest'}
-          - {dockerfile: 'ubuntu-gnu-kokkos-cpu-openmp',   compiler-version: '11', tag: 'latest'}
-          - {dockerfile: 'ubuntu-gnu-kokkos-cpu-serial',   compiler-version: '11', tag: 'latest'}
+        include:
+          - name: ubuntu-01
+            tpl_flags: ""
+          - name: ubuntu-02
+            tpl_flags: ${MPI_FLAGS}
+          - name: ubuntu-03
+            tpl_flags: ""
+          - name: ubuntu-04
+            tpl_flags: ${MPI_FLAGS}
+          - name: ubuntu-05
+            tpl_flags: ${KOKKOS_FLAGS}
+          - name: ubuntu-06
+            tpl_flags: ${KOKKOS_FLAGS}
+          - name: ubuntu-07
+            tpl_flags: "${MPI_FLAGS} ${TRILINOS_FLAGS}"
+          - name: ubuntu-08
+            tpl_flags: "${MPI_FLAGS} ${TRILINOS_FLAGS}"
 
     runs-on: ubuntu-latest
 
@@ -44,11 +56,6 @@ jobs:
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      - name: Construct Docker image name
-        run: |
-          IMAGE_NAME=$(echo ${{ matrix.config.dockerfile }} | sed -E 's/^([^-]+)-([^-]+)/\1-\2${{ matrix.config.compiler-version }}/')
-          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_ENV
-
       - name: Login to Github Container Registry
         uses: docker/login-action@v3
         with:
@@ -56,13 +63,35 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Build and Push Docker images for Github Container Registry
+      # Build the image, but don't push it yet (wait until it passes all tests)
+      # 'load: true' allows us to test with it
+      - name: Build Docker image
         uses: docker/build-push-action@v6
         with:
-          tags: ghcr.io/pressio/${{ env.IMAGE_NAME }}:${{ matrix.config.tag }}
-          file: docker_scripts/${{ matrix.config.dockerfile }}.dockerfile
-          build-args: |
-            COMPILER_VERSION=${{ matrix.config.compiler-version }}
-            DOCKER_TAG=${{ matrix.config.tag }}
-          # Only push image if running on main or develop
-          push: ${{ github.ref == 'refs/heads/main' || github.ref == 'refs/heads/develop' }}
+          tags: ghcr.io/pressio/${{ matrix.name }}:test
+          file: docker_scripts/${{ matrix.name }}.dockerfile
+          push: false
+          load: true
+
+      - name: Checkout pressio
+        uses: actions/checkout@v4
+        with:
+          repository: Pressio/pressio
+          path: pressio
+          ref: develop
+
+      - name: Build Pressio and run tests inside container
+        run: |
+          docker run --rm -v ${{ github.workspace }}/pressio:/pressio ghcr.io/pressio/${{ matrix.name }}:test /bin/bash -c "
+          cd /pressio &&
+          mkdir build && cd build &&
+          cmake -D PRESSIO_ENABLE_TESTS=ON -D CMAKE_CXX_FLAGS='-Wall -Werror' ${{ matrix.tpl_flags }} .. && make &&
+          export OMPI_ALLOW_RUN_AS_ROOT=1 &&
+          export OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1 &&
+          ctest -j 4 --output-on-failure"
+
+      - name: Push Docker image to GHCR
+        if: success()
+        run: |
+          docker tag ghcr.io/pressio/${{ matrix.name }}:test ghcr.io/pressio/${{ matrix.name }}
+          docker push ghcr.io/pressio/${{ matrix.name }}

@@ -1,3 +1,5 @@
+# ubuntu-gnu-kokkos-cpu-openmp
+
 ARG UBUNTU_VERSION=22.04
 FROM ubuntu:${UBUNTU_VERSION}
 
@@ -16,6 +18,7 @@ RUN apt-get update -y -q && \
         libblas-dev \
         liblapack-dev \
         git \
+        libeigen3-dev \
         libgtest-dev \
         make \
         software-properties-common \
@@ -32,7 +35,7 @@ RUN mkdir /kokkos && \
     mkdir build install && \
     wget https://github.com/kokkos/kokkos/releases/download/4.4.01/kokkos-4.4.01.tar.gz && \
     tar -xzvf kokkos-4.4.01.tar.gz && \
-    cmake -S kokkos-4.4.01 -B build -DCMAKE_INSTALL_PREFIX=install && \
+    cmake -S kokkos-4.4.01 -B build -DCMAKE_INSTALL_PREFIX=install -DKokkos_ENABLE_OPENMP=On && \
     cd build && \
     make -j$(nproc) && \
     make install

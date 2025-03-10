@@ -3,45 +3,73 @@
 This repository holds all of the Dockerfiles that create the containers used throughout the Pressio ecosystem for testing.
 These containers allow us to, e.g., not rebuild Trilinos every time we test Pressio in CI.
 
-When a Dockerfile is modified or added to this repository, the `ci-docker.yml` GitHub workflow will automatically build and push the image to the [Pressio container registry](https://github.com/orgs/Pressio/packages).
+Contents:
+- [List of Containers](#list-of-containers)
+- [Adding a New Container](#adding-a-new-container)
+  - [Adding a New Version of Trilinos](#adding-a-new-version-of-trilinos)
+- [Pushing Containers](#pushing-containers)
+
+## List of Containers
+
+The following table shows the current Docker containers maintained by the `pressio-containers` repository.
+Click on a container to see its corresponding dockerfile with all dependencies.
+
+| Container Name |
+| :------------- |
+| [`ubuntu-01`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-01.dockerfile) |
+| [`ubuntu-02`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-02.dockerfile) |
+| [`ubuntu-03`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-03.dockerfile) |
+| [`ubuntu-04`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-04.dockerfile) |
+| [`ubuntu-05`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-05.dockerfile) |
+| [`ubuntu-06`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-06.dockerfile) |
+| [`ubuntu-07`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-07.dockerfile) |
+| [`ubuntu-08`](https://github.com/Pressio/pressio-containers/blob/main/docker_scripts/ubuntu-08.dockerfile) |
 
 ## Adding a New Container
 
-Generally, to add a new container you will need to create a new Dockerfile (see the `docker_scripts` directory for existing Dockerfiles).
+To add a new container you will need to create a new Dockerfile (see the `docker_scripts` directory for existing Dockerfiles).
 
 Once the dockerfile has been made, simply add it to the configuration matrix of the `ci-docker.yml`.
 
-For example, if the new file is called `macos-clang.dockerfile`, you would add to the matrix:
+For example, if the new file is called `ubuntu-09.dockerfile`, and uses MPI, you would add to the matrix:
 
 ```yaml
 jobs:
   CI:
     strategy:
       matrix:
-        config:
+        include:
           #
           # Current containers...
           #
-          - {dockerfile: 'macos-clang', compiler-version: '14', tag: 'latest'}
+          - name: ubuntu-09
+            display_name: ubuntu-09, <description>
+            tpl_flags: "${MPI_FLAGS} <any other flags>"
 ```
 
-## Adding a New Version of Trilinos
+The `tpl_flags` are used when configuring Pressio to test with the new image.
 
-To add a new version of Trilinos,  you **do not** need to create a new Dockerfile.
-Instead, use the existing `ubuntu-gnu-trilinos.dockerfile` file in the configuration matrix of `ci-docker.yml` and add the desired tag or commit hash to the `tag` field.
+### Adding a New Version of Trilinos
 
-For example, to add an image with Trilinos 15.0.0 (tagged in GH with `trilinos-release-15-0-0`):
+To add a new version of Trilinos, create a new Dockerfile that runs the `install_trilinos.sh` script with the desired version or commit.
 
-```yaml
-jobs:
-  CI:
-    strategy:
-      matrix:
-        config:
-          #
-          # Current containers...
-          #
-          - {dockerfile: 'ubuntu-gnu-trilinos', compiler-version: '11', tag: 'trilinos-release-15-0-0'}
+For example, this dockerfile creates a container from the `0dc4553` commit:
+
+```docker
+ARG UBUNTU_VERSION=22.04
+FROM ubuntu:${UBUNTU_VERSION}
+
+ARG TRILINOS_VERSION=0dc4553
+
+COPY ../scripts/install_trilinos.sh /install_trilinos.sh
+RUN chmod +x /install_trilinos.sh && \
+    /install_trilinos.sh ${TRILINOS_VERSION}
 ```
 
-See how Trilinos `702aac5` was added in https://github.com/Pressio/pressio/pull/651.
+## Pushing Containers
+
+The `ci-docker.yml` GitHub workflow runs on all pushes or pull requests. For every image provided in the `matrix` (see [Adding a New Container](#adding-a-new-container)), the workflow will perform three steps:
+
+1. Build the image
+2. Build and test [Pressio](https://github.com/Pressio/pressio) (`develop` branch) inside of the container
+3. If everything passes, push the image to the [Pressio container registry](https://github.com/orgs/Pressio/packages).
