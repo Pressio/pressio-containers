@@ -71,5 +71,5 @@ RUN chmod +x /install_trilinos.sh && \
 The `ci-docker.yml` GitHub workflow runs on all pushes or pull requests. For every image provided in the `matrix` (see [Adding a New Container](#adding-a-new-container)), the workflow will perform three steps:
 
 1. Build the image
-2. Build and test [Pressio](https://github.com/Pressio/pressio) (`develop` branch) inside of the container
+2. Build and test [pressio-rom](https://github.com/Pressio/pressio-rom) (`develop` branch) inside of the container
 3. If everything passes, push the image to the [Pressio container registry](https://github.com/orgs/Pressio/packages).
