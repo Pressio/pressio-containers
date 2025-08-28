@@ -44,8 +44,6 @@ update-alternatives --install /usr/bin/cc cc /usr/bin/gcc 20
 update-alternatives --set cc /usr/bin/gcc
 update-alternatives --install /usr/bin/c++ c++ /usr/bin/g++ 20
 update-alternatives --set c++ /usr/bin/g++
-update-alternatives --install /usr/bin/fortrann fortrann /usr/bin/gfortran 20
-update-alternatives --set fortrann /usr/bin/gfortran
 
 # Clone and build Trilinos
 mkdir /trilinos && cd /trilinos
