@@ -42,6 +42,8 @@ jobs:
             tpl_flags: "${MPI_FLAGS} ${TRILINOS_FLAGS}"
           - name: ubuntu-08
             tpl_flags: "${MPI_FLAGS} ${TRILINOS_FLAGS}"
+          - name: ubuntu-09
+            tpl_flags: "${MPI_FLAGS} ${TRILINOS_FLAGS}"
 
     runs-on: ubuntu-latest
 
